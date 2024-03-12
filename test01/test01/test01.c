@@ -112,11 +112,16 @@ int test01()
 
 
 void test02(int a);
+void test03();
+void Dump(char* p, int len);
+void Copy(char* p1, char* p2);
+
 
 main()
 {
 	//test01();
-	test02(1);
+	//test02(1); //1은 아무 의미 없음, 아규먼트를 받아 줄 때에는 이와 같이 던져줄 수 있는 예시일 뿐
+	test03();
 }
 
 void test02(int a)
@@ -124,12 +129,54 @@ void test02(int a)
 	char ca[] = "Hello"; //ca[0]부터 h가 들어간다.ca[4]에는 o가 들어가있다, ca[5]번째에는 null이 들어간다(\n)
 	for (int i = 0; i < 10; i++) // 0 ~ 5까지 i값이 변동이 된다.
 	{
-		printf("ca[%d] : %c (%2x)\n", i, ca[i], ca[i]);
+		printf("ca[%d] : %c (%2x) [%08x]\n", i, ca[i], ca[i], ca + i);
 	}
-	ca[2] -= 1;
-	ca[3] -= 1;
+	int ia[] = {10,20,30,40,50 };
 	for (int i = 0; i < 10; i++) // 0 ~ 5까지 i값이 변동이 된다.
 	{
-		printf("ca[%d] : %c (%2x)\n", i, ca[i], ca[i]);
+		printf("ia[%d] : %d (08x) [%08x]\n", i, ia[i], ia[i], ia + i);
+	}
+
+	int ia2[3][2] = {10,20,30,40,50,60};
+	for (int y = 0; y < 3; y++) // 0 ~ 5까지 i값이 변동이 된다.
+	{
+		for (int x = 0; x < 2; x++)
+		{
+			printf("ia2[%d][%d] : %d [%08x]\n", y, x, ia2[y][x], ia2 + y);
+		}
+	}
+}
+void test03()
+{
+	char buf[100]; //안전 메모리 공간 확보
+	char* pBuf;    //안전 메모리 공간중의 출력 위치
+	unsigned int addr;      //출력 위치 지정을 위한 입력변수(주소)
+	char kBuf[100]; //출력 문자열 입력 공간
+
+	printf("안전공간의 주소는 %d[%08x] 입니다.\n", (unsigned int) buf, (unsigned int) buf);
+	printf("입력을 시작할 주소를 입력하세요 :");
+	scanf("%d", &addr); // 안전공간 주소 참고
+	pBuf = buf + addr;
+	printf("문자열을 입력하세요 :");
+	scanf("%s", kBuf); //키보드로 입력받을 때 문자열을 입력 받을 충분한 공간을 만들어줘야 한다.
+	strcpy(pBuf, kBuf); //문자열 복사 함수
+	Copy(pBuf, kBuf);
+	Dump(buf, 100);
+}
+
+
+void Copy(char* p1, char* p2)
+{
+	while (*p2) *p1++ = *p2++; *p1 = 0; //p2가 소스가 되고 p1이 타겟이 된다. p2의 값이 null이 아니라면 p1의 값에다가 p2에 있는 값을 복사해서 넣어라.
+	//p2가 null의 위치에 왔을 때 p1은 0이 된다.
+}
+void Dump(char *p, int len) //메모리 공간 출력 범용 함수
+{
+	for (int i = 0; i < len; i++) // 안전공간 메모리 덤프
+	{
+		if(i % 16 == 0)  printf("\n%08x ", p); //주소값을 찍는다.
+		if (i % 8 == 0)  printf(" ");
+		printf("%02x ", (unsigned char)*p++); // p자체는 캐릭터포인터인데 *p는 그 주소의 자체에 있는 값을 찍는다.
+		
 	}
 }
