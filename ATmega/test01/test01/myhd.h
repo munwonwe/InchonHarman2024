@@ -1,10 +1,13 @@
 ﻿#define F_CPU 16000000L
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #define __delay_t 500
 
 uint8_t digit[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x27, 0x7F, 0x67, 0x77, 0x7c, 0x58, 0x5e, 0x79, 0x71};		//전역변수
 char arr[5];
+
+volatile int state = 0;
 
 void TogglePinA(int n) // n: n번째 비트, dl: delay in mili-second
 {
@@ -55,7 +58,6 @@ char* Trans(unsigned long num)	//10진 정수 입력받아서 16진수 문자열
 	//FND_4(arr);
 	return arr;
 }
-
 
 void test1()
 {
@@ -153,4 +155,21 @@ void test3()
 		}
 	}
 	return 0;
+}
+void test4()
+{
+	INIT_PORT();
+	INIT_INT0();
+	
+	while(1)
+	{
+		if(state == 1)
+		{
+			PORTA = 0x01;
+		}
+		else
+		{
+			PORTB = 0x00;
+		}
+	}
 }
