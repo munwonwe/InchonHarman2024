@@ -1,3 +1,4 @@
+/*
 #include "myhd.h"
 
 //unsigned long cnt = 0, tcnt = 0;
@@ -107,6 +108,7 @@ int main(void)
 		if(cnt > 0x10000) cnt = 0;
 		SegDisp(cnt);
     }*/
+/*
 }
 
 
@@ -118,3 +120,4 @@ ISR(TIMER1_OVF_vect)
 		cnt++; tcnt = 0;
 	}
 }
+*/

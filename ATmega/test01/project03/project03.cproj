@@ -145,6 +145,12 @@
     <Compile Include="myhd.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="newtest.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="newtest1.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="segment.c">
       <SubType>compile</SubType>
     </Compile>
